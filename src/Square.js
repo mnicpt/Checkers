@@ -19,12 +19,20 @@ class Square extends React.Component {
         if(isRed && playersTurn) {
             if(this.validSingleRedMove(locationDifference, existingChecker)) {
                 this.updateCheckerLocation(isRed, previousLocation, newLocation);
-            } else if(this.validDoubleRedMove(locationDifference, existingChecker)) {
-                
+            } else if(this.validDoubleRedMove(isRed, previousLocation, locationDifference, existingChecker)) {
+                let jumpedLocation = parseInt(previousLocation, 10) + parseInt(locationDifference / 2, 10);
+                this.updateCheckerLocation(isRed, previousLocation, newLocation).then(
+                    () => this.deleteJumpedCheckerAtIndex(jumpedLocation)
+                );
             }
         } else if(!playersTurn) {
             if(this.validSingleBlackMove(locationDifference, existingChecker)) {
                 this.updateCheckerLocation(isRed, previousLocation, newLocation);
+            } else if(this.validDoubleBlackMove(isRed, previousLocation, locationDifference, existingChecker)) {
+                let jumpedLocation = parseInt(previousLocation, 10) - parseInt(-locationDifference / 2, 10);
+                this.updateCheckerLocation(isRed, previousLocation, newLocation).then(
+                    () => this.deleteJumpedCheckerAtIndex(jumpedLocation)
+                );
             }
         }
     }
@@ -33,20 +41,44 @@ class Square extends React.Component {
         return (locationDifference === 9 || locationDifference === 7) && !existingChecker;
     }
 
-    validDoubleRedMove(locationDifference, existingChecker) {
-        return (locationDifference === 18 || locationDifference === 14) && !existingChecker && !this.jumpedOwnChecker;
+    validDoubleRedMove(isRed, previousLocation, locationDifference, existingChecker) {
+        let jumpedLocation = parseInt(previousLocation, 10) + parseInt(locationDifference / 2, 10);
+        return (locationDifference === 18 || locationDifference === 14) && !existingChecker && !this.jumpedOwnCheckerAtIndex(isRed, jumpedLocation);
     }
 
     validSingleBlackMove(locationDifference, existingChecker) {
         return (locationDifference === -9 || locationDifference === -7) && !existingChecker;
     }
 
-    jumpedOwnChecker() {
-        return false;
+     validDoubleBlackMove(isRed, previousLocation, locationDifference, existingChecker) {
+        let jumpedLocation = parseInt(previousLocation, 10) - parseInt(-locationDifference / 2, 10);
+        console.log(!this.jumpedOwnCheckerAtIndex(isRed, jumpedLocation));
+        return (locationDifference === -18 || locationDifference === -14) && !existingChecker && !this.jumpedOwnCheckerAtIndex(isRed, jumpedLocation);
+    }
+
+    jumpedOwnCheckerAtIndex(isRed, index) {
+        if(isRed) {
+            return this.props.checkers[index].color === 'red' ? true : false;
+        }
+
+        return this.props.checkers[index].color === 'red' ? false : true;
+    }
+
+    deleteJumpedCheckerAtIndex(index) {
+        firebase.database().ref().once('value').then(function(snapshot) {
+            let data = snapshot.val();
+            let checkers = data.checkers;
+
+            delete checkers[index];
+
+            let updates = {};
+            updates['checkers/'] = checkers;
+            firebase.database().ref().update(updates);
+        });
     }
 
     updateCheckerLocation(isRed, previousLocation, newLocation) {
-        firebase.database().ref().once('value').then(function(snapshot) {
+        return firebase.database().ref().once('value').then(function(snapshot) {
             let data = snapshot.val();
             let checkers = data.checkers;
             let checker = data.checkers[previousLocation];
