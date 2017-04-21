@@ -1,0 +1,52 @@
+* {
+  box-sizing: border-box; }
+
+.game {
+  width: 400px;
+  height: 400px;
+  margin: 50px auto; }
+  .game .hud {
+    height: 30px;
+    line-height: 30px; }
+    .game .hud .player {
+      font-size: 20px;
+      text-align: center; }
+    .game .hud .title {
+      font-size: 14px;
+      color: #aaa;
+      text-align: center; }
+  .game .board {
+    display: flex;
+    width: 400px;
+    flex-wrap: wrap; }
+    .game .board .square {
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      border: 1px solid black; }
+      .game .board .square.black {
+        background: #555; }
+      .game .board .square.gray {
+        background: #ccc; }
+      .game .board .square .checker {
+        width: 40px;
+        height: 40px;
+        margin: 4px;
+        border-radius: 20px; }
+        .game .board .square .checker.red {
+          background: red; }
+        .game .board .square .checker.white {
+          background: white; }
+        .game .board .square .checker.empty {
+          display: none; }
+  .game .startBtn {
+    text-align: center; }
+    .game .startBtn button {
+      width: 100px;
+      height: 40px;
+      -webkit-appearance: none;
+      background: #3da9f9;
+      border: none;
+      margin-top: 10px;
+      font-size: 18px; }
