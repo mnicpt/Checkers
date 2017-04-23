@@ -33,11 +33,14 @@
         width: 40px;
         height: 40px;
         margin: 4px;
-        border-radius: 20px; }
+        border-radius: 20px;
+        line-height: 40px; }
         .game .board .square .checker.red {
-          background: red; }
+          background: red;
+          color: white; }
         .game .board .square .checker.white {
-          background: white; }
+          background: white;
+          color: black; }
         .game .board .square .checker.empty {
           display: none; }
   .game .startBtn {

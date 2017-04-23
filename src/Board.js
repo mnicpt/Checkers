@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Square from './Square';
 
-class Board extends React.Component {
+class Board extends Component {
   constructor() {
     super();
     
@@ -31,7 +31,7 @@ class Board extends React.Component {
     return (
       <div className="board">
         {this.squares.map((square, index) => (
-          <Square key={index} value={index} color={square.props.color} checkers={this.props.checkers}/>
+          <Square key={index} value={index} color={square.props.color} data={this.props.data}/>
          ))}
       </div>
     );
