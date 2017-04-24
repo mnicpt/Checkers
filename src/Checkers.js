@@ -16,6 +16,8 @@ class Checkers extends Component {
           <div className='cell status'>{this.props.data.status}</div>
         </div>
         <Board data={this.props.data}/>
+        <br/>
+        <div className='note'><b>Note:</b> Continuous jumping if applicable 'in progress'.</div>
       </div>
     );
   }

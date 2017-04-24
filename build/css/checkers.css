@@ -17,6 +17,9 @@ a {
   width: 406px;
   height: 100%;
   margin: 50px auto; }
+  .game .note {
+    color: white;
+    font-size: 14px; }
   .game .hud {
     height: 30px;
     line-height: 30px; }
@@ -60,13 +63,3 @@ a {
           border: 3px double #777; }
         .game .board .square .checker.empty {
           display: none; }
-  .game .startBtn {
-    text-align: center; }
-    .game .startBtn button {
-      width: 100px;
-      height: 40px;
-      -webkit-appearance: none;
-      background: #3da9f9;
-      border: none;
-      margin-top: 10px;
-      font-size: 18px; }

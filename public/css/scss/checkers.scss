@@ -14,7 +14,7 @@ html{
 }
 a{
   color:white;
-  
+
   &:hover{
     color:#efefef;
   }
@@ -23,6 +23,11 @@ a{
   width: $board-size;
   height: 100%;
   margin: 50px auto;
+
+  .note{
+    color:white;
+    font-size: 14px;
+  }
 
   .hud{
     height:30px;
@@ -82,19 +87,6 @@ a{
           display:none;
         }
       }
-    }
-  }
-  .startBtn{
-    text-align: center;
-
-    button{
-      width:100px;
-      height:40px;
-      -webkit-appearance: none;
-      background:rgb(61, 169, 249);
-      border:none;
-      margin-top: 10px;
-      font-size:18px;
     }
   }
 }

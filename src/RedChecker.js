@@ -17,8 +17,8 @@ class RedChecker extends Checker {
             let jumpedLocation = parseInt(previousLocation, 10) + parseInt(locationDifference / 2, 10);
             util.updateCheckerLocation(true, previousLocation, newLocation).then(() => {
                 util.deleteJumpedCheckerAtIndex(jumpedLocation).then(
-                    () => util.checkForKing(true, parseInt(newLocation, 10), true).then(
-                        () => util.canGoAgain(true, false, newLocation)
+                    () => util.canGoAgain(true, false, newLocation).then(
+                        () => util.checkForKing(true, parseInt(newLocation, 10))
                     )
                 )
             });

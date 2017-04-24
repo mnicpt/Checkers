@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Checker from './Checker';
 import RedChecker from './RedChecker';
-import BlackChecker from './BlackChecker';
+import WhiteChecker from './WhiteChecker';
 
 class Square extends Component {
 
@@ -22,7 +22,7 @@ class Square extends Component {
         if(isRed && playersTurn) {
             new RedChecker().move(previousLocation, newLocation, previousChecker, newChecker);
         } else if(!playersTurn) {
-            new BlackChecker().move(previousLocation, newLocation, previousChecker, newChecker);
+            new WhiteChecker().move(previousLocation, newLocation, previousChecker, newChecker);
         }  
     }
 

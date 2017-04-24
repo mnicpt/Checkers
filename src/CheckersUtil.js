@@ -37,7 +37,7 @@ export function isKing(checker) {
     return checker.dataset.king === "true";
 }
 
-export function checkForKing(isRed, newLocation, jumped) {
+export function checkForKing(isRed, newLocation) {
     if(isRed) {
         if([56, 58, 60, 62].indexOf(newLocation) !== -1) {
             return this.kingCheckerAtIndex(newLocation);
@@ -109,7 +109,7 @@ export function updateCheckerLocation(isRed, previousLocation, newLocation) {
     });
 }
 
-export function canGoAgain(isRed, isKing, location) {
+export function canGoAgain(isRed, isKing, newLocation) {
     let href = location.href.split('/');
     let id = href[5].split('?')[0];
     let ref = firebase.database().ref('games/' +id);
@@ -120,7 +120,7 @@ export function canGoAgain(isRed, isKing, location) {
 
         if(isKing) {
             //check for opponent at 7, -7, 9 and -9 && empty space double that
-            let locations = opponentNearKing(checkers, location);
+            let locations = opponentNearKing(checkers, parseInt(newLocation, 10));
             if(locations.length !== 0 && emptySpaceAfterKing(checkers, locations)) {
                 let updates = {};
                 updates['status'] = isRed ? "Red's turn..." : "White's turn...";
@@ -129,8 +129,8 @@ export function canGoAgain(isRed, isKing, location) {
             }
         } else if(isRed) {
             // check for opponent 7 and 9 && empty space double that
-            let locations = opponentNearRed(checkers, location);
-            if(locations.length !== 0 && emptySpaceAfterRed(checkers, location)) {
+            let locations = opponentNearRed(checkers, parseInt(newLocation, 10));
+            if(locations.length !== 0 && emptySpaceAfterRed(checkers, locations)) {
                 let updates = {};
                 updates['status'] = "Red's turn...";
                 updates['turn'] = "Red";
@@ -138,8 +138,8 @@ export function canGoAgain(isRed, isKing, location) {
             }
         } else {
             // check for opponent -7 and -9 && empty space double that
-            let locations = opponentNearWhite(checkers, location);
-            if(locations.length !== 0 && emptySpaceAfterWhite(checkers, location)) {
+            let locations = opponentNearWhite(checkers, parseInt(newLocation, 10));
+            if(locations.length !== 0 && emptySpaceAfterWhite(checkers, locations)) {
                 let updates = {};
                 updates['status'] = "White's turn...";
                 updates['turn'] = "White";
@@ -158,7 +158,7 @@ function opponentNearKing(checkers, location) {
             locations.push(-7);
         }
 
-        if(thisChecker.location === (location + parseInt(7, 10))) {
+        if(thisChecker.location === (location + 7)) {
             locations.push(7);
         }
 
@@ -166,7 +166,7 @@ function opponentNearKing(checkers, location) {
             locations.push(-9);
         }
 
-        if(thisChecker.location === (location + parseInt(9, 10))) {
+        if(thisChecker.location === (location + 9)) {
             locations.push(9);
         }
     }
@@ -179,16 +179,15 @@ function opponentNearRed(checkers, location) {
     let locations = [];
     for(let checker in checkers) {
         let thisChecker = checkers[checker];
-
-        if(thisChecker.location === (location + parseInt(7, 10))) {
+        if(thisChecker.location === (parseInt(location, 10) + 7)) {
             locations.push(7);
         }
 
-        if(thisChecker.location === (location + parseInt(9, 10))) {
+        if(thisChecker.location === (parseInt(location, 10) + 9)) {
             locations.push(9);
         }
     }
-
+    
     return locations;
 }
 
@@ -214,7 +213,7 @@ function emptySpaceAfterKing(checkers, locations) {
         let thisLocation = locations[location];
         for(let checker in checkers) {
             let thisChecker = checkers[checker];
-            if(thisChecker.location === thisLocation * 2) {
+            if(thisChecker.location === Math.abs(thisLocation * 2)) {
                 return false;
             }
         }
@@ -227,7 +226,7 @@ function emptySpaceAfterRed(checkers, locations) {
         let thisLocation = locations[location];
         for(let checker in checkers) {
             let thisChecker = checkers[checker];
-            if(thisChecker.location === thisLocation + 14 || thisChecker.location === thisLocation + 18) {
+            if(thisChecker.location === (parseInt(thisLocation, 10) + 14) || parseInt(thisChecker.location, 10) === (parseInt(thisLocation, 10) + 18)) {
                 return false;
             }
         }
@@ -240,7 +239,7 @@ function emptySpaceAfterWhite(checkers, locations) {
         let thisLocation = locations[location];
         for(let checker in checkers) {
             let thisChecker = checkers[checker];
-            if(thisChecker.location === thisLocation - 14 || thisChecker.location === thisLocation - 18) {
+            if(thisChecker.location === (thisLocation - 14) || thisChecker.location === (thisLocation - 18)) {
                 return false;
             }
         }
