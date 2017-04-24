@@ -30,7 +30,7 @@ function initializeGame() {
         p1_token: "Red",
         p2_token: "White",
         checkers: resetBoard(),
-        turn: "Player",
+        turn: "Red",
         status: "Red's turn..."
     };
 
@@ -52,7 +52,7 @@ function initializeGame() {
       let gamesArr = games.toString().split('/');
 
       let id = gamesArr[gamesArr.length - 1];
-      let domain = "https://checkers-8fac9.firebaseio.com/";
+      let domain = "https://checkers-8fac9.firebaseapp.com";
       let p1_query = `#/games/${id}?p=1`;
       let p2_query = `#/games/${id}?p=2`;
 

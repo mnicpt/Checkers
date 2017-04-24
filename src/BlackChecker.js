@@ -16,7 +16,9 @@ class BlackChecker extends Checker {
             let jumpedLocation = parseInt(previousLocation, 10) - parseInt(-locationDifference / 2, 10);
             util.updateCheckerLocation(false, previousLocation, newLocation).then(() => {
                 util.deleteJumpedCheckerAtIndex(jumpedLocation).then(
-                    () => util.checkForKing(false, parseInt(newLocation, 10), true)
+                    () => util.checkForKing(false, parseInt(newLocation, 10), true).then(
+                        () => util.canGoAgain(false, false, newLocation)
+                    )
                 )
             });
         }   

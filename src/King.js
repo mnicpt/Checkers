@@ -17,7 +17,9 @@ class King extends Checker {
             return util.updateCheckerLocation(isRed, previousLocation, newLocation);
         } else if(this.validator.validDoubleKingMove(isRed, previousLocation, locationDifference, previousChecker, jumpedLocation)) {
             return util.updateCheckerLocation(isRed, previousLocation, newLocation).then(
-                () => util.deleteJumpedCheckerAtIndex(jumpedLocation)
+                () => util.deleteJumpedCheckerAtIndex(jumpedLocation).then(
+                    () => util.canGoAgain(isRed, true, newLocation)
+                )
             );
         }
     }

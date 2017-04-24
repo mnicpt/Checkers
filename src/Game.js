@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Checkers from './Checkers';
+import resetBoard from './Reset';
+import * as Util from './CheckersUtil';
 import * as firebase from 'firebase';
 
 
@@ -45,6 +47,21 @@ class Game extends Component {
     componentDidMount() {
         listenForUpdates(this.state.token, (game) => {
             if(game.checkers) {
+                Util.checkForWin(game.checkers).then(
+                    (winner) => {
+                        if(winner) {
+                            const newGame = {
+                                p1_token: "Red",
+                                p2_token: "White",
+                                checkers: resetBoard(),
+                                turn: "Red",
+                                status: "Red's turn..."
+                            };
+                            firebase.database().ref("games/" +this.state.token)
+                                .set(newGame);
+                        }
+                    }
+                );
                 ReactDOM.render(
                     <Checkers data={game}/>,
                     document.querySelector('#main')

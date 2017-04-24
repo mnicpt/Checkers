@@ -1,26 +1,37 @@
 import * as firebase from 'firebase';
 
-export function checkForWin(checkers) {
-    let color = "";
-    let winner = true;
+export function checkForWin() {
+    let href = location.href.split('/');
+    let id = href[5].split('?')[0];
 
-    for (let checker in checkers) {
-        let thisChecker = checkers[checker];
-        if (color === "") {
-            color = thisChecker.color;
-        } else if (thisChecker.color !== color) {
-            winner = false;
-        }
-    }
-    if (winner) {
-        if (color === 'red') {
-            alert("Player is the winner.");
-        } else {
-            alert("Opponent is the winner.");
-        }
+    return firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
+        let data = snapshot.val();
+        let checkers = data.checkers;
 
-        return true;
-    }
+        let color = "";
+        let winner = true;
+
+        for (let checker in checkers) {
+            let thisChecker = checkers[checker];
+            if (color === "") {
+                color = thisChecker.color;
+            } else if (thisChecker.color !== color) {
+                winner = false;
+            }
+        }
+        let updates = {};
+        if (winner) {
+            if (color === 'red') {
+                updates['status'] = "Red is the winner!";
+                alert("Red is the winner.");
+            } else {
+                updates['status'] = "White is the winner!";
+                alert("White is the winner.");
+            }
+
+            return true;
+        }
+    });
 }
 export function isKing(checker) {
     return checker.dataset.king === "true";
@@ -97,42 +108,65 @@ export function updateCheckerLocation(isRed, previousLocation, newLocation) {
         firebase.database().ref('games/' +id).update(updates);
     });
 }
-export function playerGoesAgain(isRed, location) {
+
+export function canGoAgain(isRed, isKing, location) {
     let href = location.href.split('/');
     let id = href[5].split('?')[0];
+    let ref = firebase.database().ref('games/' +id);
 
-    return firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
-        // let updates = {};
-        // if((this.state.jumpChecker === null || this.state.jumpChecker === location) && this.canJump(isRed, location)) {
-        //     if(isRed) {
-        //         updates['/status'] = "Player's turn...";
-        //         updates['turn'] = "Player";
-        //     } else {
-        //         updates['/status'] = "Opponent's turn...";
-        //         updates['turn'] = "Opponent";
-        //     }
+    return ref.once('value').then(function(snapshot) {
+        let data = snapshot.val();
+        let checkers = data.checkers;
 
-        //     firebase.database().ref().update(updates);
-        // } else {
-        //     if(isRed) {
-        //         updates['/status'] = "Opponent's turn...";
-        //         updates['turn'] = "Opponent";
-        //     } else {
-        //         updates['/status'] = "Player's turn...";
-        //         updates['turn'] = "Player";
-        //     }
-
-        //     firebase.database().ref().update(updates);
-
-        //     this.setState({jumpChecker:null});
-        // }
+        if(isKing) {
+            //check for opponent at 7, -7, 9 and -9 && empty space double that
+            if(opponentNearKing(checkers, location) && emptySpaceAfterKing(checkers, location)) {
+                let updates = {};
+                updates['status'] = isRed ? "Red's turn..." : "White's turn...";
+                updates['turn'] = isRed ? "Red" : "White";
+                ref.update(updates);
+            }
+        } else if(isRed) {
+            // check for opponent 7 and 9 && empty space double that
+            if(opponentNearRed(checkers, location) && emptySpaceAfterRed(checkers, location)) {
+                let updates = {};
+                updates['status'] = "Red's turn...";
+                updates['turn'] = "Red";
+                ref.update(updates);
+            }
+        } else {
+            // check for opponent -7 and -9 && empty space double that
+            if(opponentNearWhite(checkers, location) && emptySpaceAfterWhite(checkers, location)) {
+                let updates = {};
+                updates['status'] = "Red's turn...";
+                updates['turn'] = "Red";
+                ref.update(updates);
+            }
+        }
     });
 }
 
-export function canJump(isRed, location) {
-    // can jump right
-    // can jump left
-    // if king can jump forward/backward left or right
+function opponentNearKing(checkers, location) {
+    return false;
+}
+
+function opponentNearRed(checkers, location) {
+    return false;
+}
+
+function opponentNearWhite(checkers, location) {
+    return false;
+}
+
+function emptySpaceAfterKing(checkers, location) {
+    return false;
+}
+
+function emptySpaceAfterRed(checkers, location) {
+    return false;
+}
+
+function emptySpaceAfterWhite(checkers, location) {
     return false;
 }
 
