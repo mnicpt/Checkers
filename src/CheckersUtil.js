@@ -120,7 +120,8 @@ export function canGoAgain(isRed, isKing, location) {
 
         if(isKing) {
             //check for opponent at 7, -7, 9 and -9 && empty space double that
-            if(opponentNearKing(checkers, location) && emptySpaceAfterKing(checkers, location)) {
+            let locations = opponentNearKing(checkers, location);
+            if(locations.length !== 0 && emptySpaceAfterKing(checkers, locations)) {
                 let updates = {};
                 updates['status'] = isRed ? "Red's turn..." : "White's turn...";
                 updates['turn'] = isRed ? "Red" : "White";
@@ -128,7 +129,8 @@ export function canGoAgain(isRed, isKing, location) {
             }
         } else if(isRed) {
             // check for opponent 7 and 9 && empty space double that
-            if(opponentNearRed(checkers, location) && emptySpaceAfterRed(checkers, location)) {
+            let locations = opponentNearRed(checkers, location);
+            if(locations.length !== 0 && emptySpaceAfterRed(checkers, location)) {
                 let updates = {};
                 updates['status'] = "Red's turn...";
                 updates['turn'] = "Red";
@@ -136,10 +138,11 @@ export function canGoAgain(isRed, isKing, location) {
             }
         } else {
             // check for opponent -7 and -9 && empty space double that
-            if(opponentNearWhite(checkers, location) && emptySpaceAfterWhite(checkers, location)) {
+            let locations = opponentNearWhite(checkers, location);
+            if(locations.length !== 0 && emptySpaceAfterWhite(checkers, location)) {
                 let updates = {};
-                updates['status'] = "Red's turn...";
-                updates['turn'] = "Red";
+                updates['status'] = "White's turn...";
+                updates['turn'] = "White";
                 ref.update(updates);
             }
         }
@@ -147,26 +150,84 @@ export function canGoAgain(isRed, isKing, location) {
 }
 
 function opponentNearKing(checkers, location) {
-    return false;
+    // -7, 7, 9, -9
+    let locations = [];
+    for(let checker in checkers) {
+        let thisChecker = checkers[checker];
+        if(thisChecker.location === (location - 7)) {
+            locations.push(-7);
+        }
+
+        if(thisChecker.location === (location + parseInt(7, 10))) {
+            locations.push(7);
+        }
+
+        if(thisChecker.location === (location - 9)) {
+            locations.push(-9);
+        }
+
+        if(thisChecker.location === (location + parseInt(9, 10))) {
+            locations.push(9);
+        }
+    }
+
+    return locations;
 }
 
 function opponentNearRed(checkers, location) {
-    return false;
+    // 7, 9
+    let locations = [];
+    for(let checker in checkers) {
+        let thisChecker = checkers[checker];
+
+        if(thisChecker.location === (location + parseInt(7, 10))) {
+            locations.push(7);
+        }
+
+        if(thisChecker.location === (location + parseInt(9, 10))) {
+            locations.push(9);
+        }
+    }
+
+    return locations;
 }
 
 function opponentNearWhite(checkers, location) {
-    return false;
+    // -7, -9
+    let locations = [];
+    for(let checker in checkers) {
+        let thisChecker = checkers[checker];
+        if(thisChecker.location === (location - 7)) {
+            locations.push(-7);
+        }
+
+        if(thisChecker.location === (location - 9)) {
+            locations.push(-9);
+        }
+    }
+
+    return locations;
 }
 
-function emptySpaceAfterKing(checkers, location) {
-    return false;
+function emptySpaceAfterKing(checkers, locations) {
+    for(let location in locations) {
+        let thisLocation = locations[location];
+        for(let checker in checkers) {
+            let thisChecker = checkers[checker];
+            if(thisChecker.location === thisLocation * 2) {
+                return false;
+            }
+        }
+    }
 }
 
 function emptySpaceAfterRed(checkers, location) {
+    // 14, 18
     return false;
 }
 
 function emptySpaceAfterWhite(checkers, location) {
+    // -14, -18
     return false;
 }
 
