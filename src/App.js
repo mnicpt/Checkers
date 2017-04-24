@@ -10,7 +10,7 @@ export default class App extends Component {
       <HashRouter>
         <div>
           <Route exact path="/" component={Home} />
-          <Route exact path="/:token" component={Game} />
+          <Route exact path="/games/:token" component={Game} />
         </div>
       </HashRouter>
     );

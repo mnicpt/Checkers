@@ -29,7 +29,10 @@ class CheckerValidator {
     }
 
     jumpedOwnCheckerAtIndex(isRed, index) {
-        firebase.database().ref().once('value').then(function(snapshot) {
+        let href = location.href.split('/');
+        let id = href[href.length - 1];
+
+        firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
             let data = snapshot.val();
             let checkers = data.checkers;
 

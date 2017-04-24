@@ -1,4 +1,3 @@
-import * as firebase from 'firebase';
 import Color from './Color';
 
 let color = Color.BLACK;
@@ -13,6 +12,8 @@ function initCheckers() {
       checkers[i] = {location: i, color: Color.WHITE, king: false};
     }
   }
+
+  return checkers;
 }
 
 function squareColorAtIndex(i) {
@@ -25,25 +26,8 @@ function squareColorAtIndex(i) {
   return i % 2 === 0 ? primaryColor : color;
 }
 
-function initDatabase() {
-  let database = firebase.database().ref();
-  color = Color.BLACK;
-  primaryColor = Color.GRAY;
-  checkers = {};
-
-  initCheckers();
-
-  database.set({
-      checkers: checkers,
-      turn: "Player",
-      status: "Player's turn...",
-      player: { uid: null, name: "Player" },
-      opponent: { uid: null, name: "Opponent" }
-  });
+function resetBoard() {
+  return initCheckers();
 }
 
-function newCheckersGame() {
-  initDatabase();
-}
-
-export default newCheckersGame;
+export default resetBoard;

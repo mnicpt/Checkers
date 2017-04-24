@@ -39,7 +39,10 @@ export function checkForKing(isRed, newLocation, jumped) {
 }
 
 export function kingCheckerAtIndex(index) {
-    return firebase.database().ref().once('value').then(function(snapshot) {
+    let href = location.href.split('/');
+    let id = href[href.length - 1];
+
+    return firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
         let data = snapshot.val();
         let checkers = data.checkers;
         let checker = checkers[index];
@@ -47,12 +50,15 @@ export function kingCheckerAtIndex(index) {
         checkers[index] = {color: checker.color, location: index, king:true};
         let updates = {};
         updates['checkers/'] = checkers;
-        firebase.database().ref().update(updates);
+        firebase.database().ref('games/' +id).update(updates);
     });
 }
 
 export function deleteJumpedCheckerAtIndex(index) {
-    return firebase.database().ref().once('value').then(function(snapshot) {
+    let href = location.href.split('/');
+    let id = href[href.length - 1];
+
+    return firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
         let data = snapshot.val();
         let checkers = data.checkers;
 
@@ -61,13 +67,17 @@ export function deleteJumpedCheckerAtIndex(index) {
         let updates = {};
         updates['checkers/'] = checkers;
 
-        firebase.database().ref().update(updates);
+        firebase.database().ref('games/' +id).update(updates);
     });
 }
 
 export function updateCheckerLocation(isRed, previousLocation, newLocation) {
-    return firebase.database().ref().once('value').then(function(snapshot) {
+    let href = location.href.split('/');
+    let id = href[href.length - 1];
+    
+    return firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
         let data = snapshot.val();
+
         let checkers = data.checkers;
         let checker = data.checkers[previousLocation];
 
@@ -84,11 +94,14 @@ export function updateCheckerLocation(isRed, previousLocation, newLocation) {
         }
         updates['checkers/'] = checkers;
         
-        firebase.database().ref().update(updates);
+        firebase.database().ref('games/' +id).update(updates);
     });
 }
 export function playerGoesAgain(isRed, location) {
-    return firebase.database().ref().once('value').then(function(snapshot) {
+    let href = location.href.split('/');
+    let id = href[href.length - 1];
+
+    return firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
         // let updates = {};
         // if((this.state.jumpChecker === null || this.state.jumpChecker === location) && this.canJump(isRed, location)) {
         //     if(isRed) {
@@ -121,4 +134,15 @@ export function canJump(isRed, location) {
     // can jump left
     // if king can jump forward/backward left or right
     return false;
+}
+
+export function token() {
+  let text = "";
+  const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for ( let i = 0; i < 8; i++ ) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return text;
 }
