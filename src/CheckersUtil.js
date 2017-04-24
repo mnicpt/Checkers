@@ -40,7 +40,7 @@ export function checkForKing(isRed, newLocation, jumped) {
 
 export function kingCheckerAtIndex(index) {
     let href = location.href.split('/');
-    let id = href[href.length - 1];
+    let id = href[5].split('?')[0];
 
     return firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
         let data = snapshot.val();
@@ -56,7 +56,7 @@ export function kingCheckerAtIndex(index) {
 
 export function deleteJumpedCheckerAtIndex(index) {
     let href = location.href.split('/');
-    let id = href[href.length - 1];
+    let id = href[5].split('?')[0];
 
     return firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
         let data = snapshot.val();
@@ -73,8 +73,8 @@ export function deleteJumpedCheckerAtIndex(index) {
 
 export function updateCheckerLocation(isRed, previousLocation, newLocation) {
     let href = location.href.split('/');
-    let id = href[href.length - 1];
-    
+    let id = href[5].split('?')[0];
+
     return firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
         let data = snapshot.val();
 
@@ -86,10 +86,10 @@ export function updateCheckerLocation(isRed, previousLocation, newLocation) {
 
         let updates = {};
         if(isRed) {
-            updates['status/'] = "Opponent's turn...";
+            updates['status/'] = "White's turn...";
             updates['turn/'] = "Opponent";
         } else {
-            updates['status/'] = "Player's turn...";
+            updates['status/'] = "Red's turn...";
             updates['turn/'] = "Player";
         }
         updates['checkers/'] = checkers;
@@ -99,7 +99,7 @@ export function updateCheckerLocation(isRed, previousLocation, newLocation) {
 }
 export function playerGoesAgain(isRed, location) {
     let href = location.href.split('/');
-    let id = href[href.length - 1];
+    let id = href[5].split('?')[0];
 
     return firebase.database().ref('games/' +id).once('value').then(function(snapshot) {
         // let updates = {};

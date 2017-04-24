@@ -1,25 +1,22 @@
 import React from 'react';
-import * as Utils from './CheckersUtil';
 import * as firebase from 'firebase';
 import resetBoard from './Reset';
 
 export default function() {
-  console.log("home");
   let queryParams = initializeGame();
   if(queryParams) {
     return (
       <div>
         <div style={{textAlign: 'center'}}>
           <h3>Start a New Game</h3>
-          <button onClick={() => startGame(queryParams.id)}>Start Game</button>
         </div>
         <div>
           <div className='cell' style={{textAlign: 'center'}}><b>Player 1 URL</b></div>
           <div className='cell' style={{textAlign: 'center'}}><b>Player 2 URL</b></div>
         </div>
         <div>
-          <div className='cell' style={{textAlign: 'center',fontSize:'13px'}}>{queryParams.p1_query}</div>
-          <div className='cell' style={{textAlign: 'center',fontSize:'13px'}}>{queryParams.p2_query}</div>
+          <div className='cell' style={{textAlign: 'center',fontSize:'13px'}}><a href={queryParams.p1_query}>{queryParams.p1_query}</a></div>
+          <div className='cell' style={{textAlign: 'center',fontSize:'13px'}}><a href={queryParams.p2_query}>{queryParams.p2_query}</a></div>
         </div>
       </div>
     );
@@ -30,11 +27,11 @@ export default function() {
 
 function initializeGame() {
     const newGame = {
-        p1_token: Utils.token(),
-        p2_token: Utils.token(),
+        p1_token: "Red",
+        p2_token: "White",
         checkers: resetBoard(),
         turn: "Player",
-        status: "Player's turn..."
+        status: "Red's turn..."
     };
 
     var config = {
@@ -56,15 +53,9 @@ function initializeGame() {
 
       let id = gamesArr[gamesArr.length - 1];
       let domain = "https://checkers-8fac9.firebaseio.com/";
-      let p1_query = `#/games/${id}?p1=${newGame.p1_token}`;
-      let p2_query = `#/games/${id}?p2=${newGame.p2_token}`;
+      let p1_query = `#/games/${id}?p=1`;
+      let p2_query = `#/games/${id}?p=2`;
 
       return {id: id, p1_query: domain + p1_query, p2_query: domain + p2_query};
-    } else {
-      startGame(id);
     }
-}
-
-function startGame(id) {
-    window.location.hash = `/games/${id}`;
 }
