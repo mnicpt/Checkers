@@ -17,7 +17,7 @@ class Square extends Component {
         let newChecker = document.querySelector(newQuery);
 
         let isRed = previousChecker.classList.contains('red');
-        let playersTurn = document.querySelector('.title').innerHTML === "Red's turn...";
+        let playersTurn = document.querySelector('.status').innerHTML === "Red's turn...";
         
         if(isRed && playersTurn) {
             new RedChecker().move(previousLocation, newLocation, previousChecker, newChecker);

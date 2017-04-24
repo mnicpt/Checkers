@@ -221,14 +221,30 @@ function emptySpaceAfterKing(checkers, locations) {
     }
 }
 
-function emptySpaceAfterRed(checkers, location) {
+function emptySpaceAfterRed(checkers, locations) {
     // 14, 18
-    return false;
+    for(let location in locations) {
+        let thisLocation = locations[location];
+        for(let checker in checkers) {
+            let thisChecker = checkers[checker];
+            if(thisChecker.location === thisLocation + 14 || thisChecker.location === thisLocation + 18) {
+                return false;
+            }
+        }
+    }
 }
 
-function emptySpaceAfterWhite(checkers, location) {
+function emptySpaceAfterWhite(checkers, locations) {
     // -14, -18
-    return false;
+    for(let location in locations) {
+        let thisLocation = locations[location];
+        for(let checker in checkers) {
+            let thisChecker = checkers[checker];
+            if(thisChecker.location === thisLocation - 14 || thisChecker.location === thisLocation - 18) {
+                return false;
+            }
+        }
+    }
 }
 
 export function token() {

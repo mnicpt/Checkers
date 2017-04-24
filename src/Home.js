@@ -7,16 +7,16 @@ export default function() {
   if(queryParams) {
     return (
       <div>
-        <div style={{textAlign: 'center'}}>
-          <h3>Start a New Game</h3>
+        <div style={{textAlign: 'center', color:'white'}}>
+          <h3>Start a New Checkers Game</h3>
         </div>
         <div>
-          <div className='cell' style={{textAlign: 'center'}}><b>Player 1 URL</b></div>
-          <div className='cell' style={{textAlign: 'center'}}><b>Player 2 URL</b></div>
+          <div className='cell' style={{textAlign: 'center', color:'white'}}><b>Player 1 URL</b></div>
+          <div className='cell' style={{textAlign: 'center', color:'white'}}><b>Player 2 URL</b></div>
         </div>
         <div>
-          <div className='cell' style={{textAlign: 'center',fontSize:'13px'}}><a href={queryParams.p1_query}>{queryParams.p1_query}</a></div>
-          <div className='cell' style={{textAlign: 'center',fontSize:'13px'}}><a href={queryParams.p2_query}>{queryParams.p2_query}</a></div>
+          <div className='cell url' style={{textAlign: 'center',fontSize:'13px', color:'white'}}><a href={queryParams.p1_query}>{queryParams.p1_query}</a></div>
+          <div className='cell url' style={{textAlign: 'center',fontSize:'13px', color:'white'}}><a href={queryParams.p2_query}>{queryParams.p2_query}</a></div>
         </div>
       </div>
     );

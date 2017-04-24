@@ -12,8 +12,8 @@ class Checkers extends Component {
       <div className='game'>
         <div className='hud'>
           <div className='cell player'>{playerName}</div>
-          <div className='cell title'>{this.props.data.status}</div>
-          <div className='cell player'> </div>
+          <div className='cell'>&nbsp;</div>
+          <div className='cell status'>{this.props.data.status}</div>
         </div>
         <Board data={this.props.data}/>
       </div>

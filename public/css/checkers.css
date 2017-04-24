@@ -1,24 +1,38 @@
 * {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  text-shadow: none; }
+
+html, body {
+  height: 100%; }
+
+html {
+  background: #333333; }
+
+a {
+  color: white; }
+  a:hover {
+    color: #efefef; }
 
 .game {
-  width: 400px;
-  height: 400px;
+  width: 406px;
+  height: 100%;
   margin: 50px auto; }
   .game .hud {
     height: 30px;
     line-height: 30px; }
     .game .hud .player {
       font-size: 20px;
-      text-align: center; }
-    .game .hud .title {
+      text-align: center;
+      color: #efefef; }
+    .game .hud .status {
       font-size: 14px;
-      color: #aaa;
+      color: #efefef;
       text-align: center; }
   .game .board {
     display: flex;
-    width: 400px;
-    flex-wrap: wrap; }
+    width: 406px;
+    flex-wrap: wrap;
+    border: 3px double white; }
     .game .board .square {
       width: 50px;
       height: 50px;
@@ -34,13 +48,16 @@
         height: 40px;
         margin: 4px;
         border-radius: 20px;
-        line-height: 40px; }
+        line-height: 40px;
+        cursor: pointer; }
         .game .board .square .checker.red {
           background: red;
-          color: white; }
+          color: white;
+          border: 3px double darkred; }
         .game .board .square .checker.white {
           background: white;
-          color: black; }
+          color: black;
+          border: 3px double #777; }
         .game .board .square .checker.empty {
           display: none; }
   .game .startBtn {
